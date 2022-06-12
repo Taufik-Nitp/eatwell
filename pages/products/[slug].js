@@ -1,23 +1,23 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
-const Post = () => {
+const Post = ({ addToCart }) => {
   const router = useRouter()
-  const { slug} = router.query
+  const { slug } = router.query
   const [pin, setPin] = useState()
   const [service, setService] = useState()
-  const checkServiceability= async()=>{
-        let pins= await fetch('http://localhost:3000/api/pincode')
-        let pinJson= await pins.json()
-        if(pinJson.includes(parseInt(pin))){
-            setService(true)
-        }else{
-            setService(false)
-        }
+  const checkServiceability = async () => {
+    let pins = await fetch('http://localhost:3000/api/pincode')
+    let pinJson = await pins.json()
+    if (pinJson.includes(parseInt(pin))) {
+      setService(true)
+    } else {
+      setService(false)
+    }
   }
-   const onChangePin=(e)=>{
-         setPin(e.target.value)
-   }
+  const onChangePin = (e) => {
+    setPin(e.target.value)
+  }
   return (
     <>
       <section className='text-gray-600 body-font overflow-hidden'>
@@ -177,11 +177,16 @@ const Post = () => {
                 <span className='title-font font-medium text-2xl text-gray-900'>
                   $58.00
                 </span>
-                <button className='flex ml-4 text-white bg-red-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-red-600 rounded'>
+                <button
+                  onClick={() => {
+                    addToCart(slug, 1, 499, 'wear the code', 'XL', 'Red')
+                  }}
+                  className='flex ml-4 text-white bg-red-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-red-600 rounded'
+                >
                   Add to Cart
                 </button>
                 <button className='flex ml-4 text-white bg-red-500 border-0 py-2 px-2 md:px-6 focus:outline-none hover:bg-red-600 rounded'>
-                   Buy Now
+                  Buy Now
                 </button>
                 <button className='rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4'>
                   <svg
