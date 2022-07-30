@@ -6,6 +6,11 @@ export default function Home() {
   return (
     <div>
       {/* <Navbar></Navbar> */}
+      <Head>
+        <title>EatWell</title>
+        <link rel='icon' href='/favicon.ico'/>
+      </Head>
+
       <div>
         <div>
           <Image

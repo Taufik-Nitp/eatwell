@@ -1,17 +1,20 @@
 import React from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
+
 import {
   AiOutlineShoppingCart,
   AiFillCloseCircle,
   AiFillMinusCircle,
   AiFillPlusCircle,
+  
 } from 'react-icons/ai'
-
+import { MdAccountCircle } from 'react-icons/md'
 import { BsFillBagCheckFill } from 'react-icons/bs'
 
-const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+const Navbar = ({ logout, user,cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
       ref.current.classList.remove('translate-x-full')
@@ -21,10 +24,14 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
       ref.current.classList.add('translate-x-full')
     }
   }
+  const [dropdown, setDropdown] = useState(false)
+  // const toggleDropdown= ()=>{
+  //       setDropdown(!dropdown)
+  // }
   const ref = useRef()
   return (
     <div className='flex flext-col md:flex-row md:justify-start justify-center items-center py-2 shadow-md sticky top-0 bg-white z-10'>
-      <div className='logo mx-2 '>
+      <div className='logo mx-5 '>
         <Link href={'/'}>
           <a>
             <Image
@@ -59,19 +66,50 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
           </Link>
         </ul>
       </div>
-      <div
-        onClick={toggleCart}
-        className='cart cursor-pointer absolute right-0 mx-5 top-4'
-      >
-        <AiOutlineShoppingCart className='text-xl md:text-3xl'></AiOutlineShoppingCart>
+      <div className='cart cursor-pointer item-center absolute right-0 mx-5 top-4 flex'>
+        <a
+          onMouseOver={() => {
+            setDropdown(true)
+          }}
+          onMouseLeave={() => {
+            setDropdown(false)
+          }}
+        >
+          {dropdown && (
+            <div className='absolute right-11 top-7 bg-red-500 rounded-md px-2 text-white '>
+              <ul>
+                <li className='py-1 text-sm hover:text-slate-900'>Account</li>
+                <li className='py-1 text-sm hover:text-slate-900'>Orders</li>
+                <a onClick={logout}>
+                  <li className='py-1 text-sm hover:text-slate-900'>Logout</li>
+                </a>
+              </ul>
+            </div>
+          )}
+          {user.value && <MdAccountCircle className='text-xl md:text-3xl' />}
+        </a>
+        {!user.value && (
+          <Link href={'/login'}>
+            <a>
+              <button className='bg-red-600 py-2 px-2 rounded-md text-white text-sm mx-2'>
+                Login
+              </button>
+            </a>
+          </Link>
+        )}
+        <AiOutlineShoppingCart
+          onClick={toggleCart}
+          className='text-xl md:text-3xl'
+        ></AiOutlineShoppingCart>
       </div>
+
       <div
         ref={ref}
         className={` w-72 h-[100vh] sideCart absolute top-0 right-0 bg-red-100 px-8 py-10 transform transition-transform ${
           Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <h2 className='font-bold text-xl text-center '>Shopping Cart</h2>
+        <h2 className='font-bold text-xl text-center '>Food Cart</h2>
         <span
           onClick={toggleCart}
           className='absolute top-5 right-2 cursor-pointer text-2xl text-red-700'
@@ -91,28 +129,14 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                   <div className=' flex font-semibold items-center justify-center w-1/3 text-lg'>
                     <AiFillMinusCircle
                       onClick={() => {
-                        removeFromCart(
-                          k,
-                          1,
-                          cart[k].price,
-                          cart[k].name,
-                          cart[k].size,
-                          cart[k].variant
-                        )
+                        removeFromCart(k, 1, cart[k].price, cart[k].name)
                       }}
                       className='cursor-pointer text-red-500'
                     />
                     <span className='mx-2 text-sm'>{cart[k].qty}</span>
                     <AiFillPlusCircle
                       onClick={() => {
-                        addToCart(
-                          k,
-                          1,
-                          cart[k].price,
-                          cart[k].name,
-                          cart[k].size,
-                          cart[k].variant
-                        )
+                        addToCart(k, 1, cart[k].price, cart[k].name)
                       }}
                       className='cursor-pointer text-red-500'
                     />
