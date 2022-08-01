@@ -39,7 +39,7 @@ const Signup = () => {
     const data = { name, email, password }
     // const data = { username: 'example' };
 
-    let res = await fetch('http://localhost:3000/api/signup', {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',

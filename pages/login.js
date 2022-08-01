@@ -12,12 +12,12 @@ const Login = () => {
 
  const [email, setemail] = useState('')
  const [password, setpassword] = useState('')
-const router= useRouter()
-  //  useEffect(() => {
-  //    if (localStorage.getItem('token')) {
-  //      router.push('/')
-  //    }
-  //  }, [])
+ const router= useRouter()
+   useEffect(() => {
+     if (localStorage.getItem('token')) {
+       router.push('/')
+     }
+   }, [])
  const handleChange = (e) => {
    
    if (e.target.name == 'email') {
@@ -37,7 +37,7 @@ const router= useRouter()
    const data = { email, password }
    // const data = { username: 'example' };
 
-   let res = await fetch('http://localhost:3000/api/login', {
+   let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
      method: 'POST', // or 'PUT'
      headers: {
        'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const router= useRouter()
        progress: undefined,
       })
       setTimeout(() => {
-         router.push('http://localhost:3000')
+         router.push(`${process.env.NEXT_PUBLIC_HOST}`)
       }, 1000);
      
     }else if(response.error){
@@ -206,3 +206,4 @@ const router= useRouter()
 }
 
 export default Login
+

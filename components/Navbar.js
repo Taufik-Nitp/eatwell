@@ -9,12 +9,19 @@ import {
   AiFillCloseCircle,
   AiFillMinusCircle,
   AiFillPlusCircle,
-  
 } from 'react-icons/ai'
 import { MdAccountCircle } from 'react-icons/md'
 import { BsFillBagCheckFill } from 'react-icons/bs'
 
-const Navbar = ({ logout, user,cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+const Navbar = ({
+  logout,
+  user,
+  cart,
+  addToCart,
+  removeFromCart,
+  clearCart,
+  subTotal,
+}) => {
   const toggleCart = () => {
     if (ref.current.classList.contains('translate-x-full')) {
       ref.current.classList.remove('translate-x-full')
@@ -67,7 +74,7 @@ const Navbar = ({ logout, user,cart, addToCart, removeFromCart, clearCart, subTo
         </ul>
       </div>
       <div className='cart cursor-pointer item-center absolute right-0 mx-5 top-4 flex'>
-        <a
+        <span
           onMouseOver={() => {
             setDropdown(true)
           }}
@@ -78,8 +85,12 @@ const Navbar = ({ logout, user,cart, addToCart, removeFromCart, clearCart, subTo
           {dropdown && (
             <div className='absolute right-11 top-7 bg-red-500 rounded-md px-2 text-white '>
               <ul>
-                <li className='py-1 text-sm hover:text-slate-900'>Account</li>
-                <li className='py-1 text-sm hover:text-slate-900'>Orders</li>
+                <Link href={'/account'}>
+                  <li className='py-1 text-sm hover:text-slate-900'>Account</li>
+                </Link>
+                <Link href={'/orders'}>
+                  <li className='py-1 text-sm hover:text-slate-900'>Orders</li>
+                </Link>
                 <a onClick={logout}>
                   <li className='py-1 text-sm hover:text-slate-900'>Logout</li>
                 </a>
@@ -87,7 +98,7 @@ const Navbar = ({ logout, user,cart, addToCart, removeFromCart, clearCart, subTo
             </div>
           )}
           {user.value && <MdAccountCircle className='text-xl md:text-3xl' />}
-        </a>
+        </span>
         {!user.value && (
           <Link href={'/login'}>
             <a>
